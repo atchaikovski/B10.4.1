@@ -1,6 +1,6 @@
 ---
 
-mysql_root_password: P@sw0rd1
+#mysql_root_password: P@sw0rd1
 db_user: mysqluser 
 db_pass: P@sw0rd1
 db_name: testdb
