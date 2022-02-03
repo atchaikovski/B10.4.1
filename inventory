@@ -1,0 +1,6 @@
+[databases]
+mysql ansible_host=34.193.70.161
+
+[dockers]
+docker0 ansible_host=44.195.94.122
+

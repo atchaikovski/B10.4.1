@@ -39,7 +39,7 @@ resource "aws_instance" "docker" {
 	  filename = "inventory"
 	}
 
-# --------- launch Ansible to deploy k8s on these resources ---------
+# --------- launch Ansible to deploy mysql/docker on these resources ---------
 
 resource "null_resource" "null1" {
   depends_on = [

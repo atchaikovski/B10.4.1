@@ -1,7 +1,4 @@
 ---
-
-#- name: Install nginx 
-#  include_tasks: nginx.yml
   
 - name: Install Docker container engine
   include_tasks: pkg.yml
@@ -44,42 +41,5 @@
   set_fact:
     docker_public_interface: "{{ hostvars[groups['dockers'][0]]['ansible_host'] }}"
   
-- name: set_fact | private network interface addr
-  set_fact:
-    docker_private_interface: 
-    shell: "ip -o -4 addr show dev eth0 | sed 's/.* inet \([^/]*\).*/\1/'"
-
-- name: print docker public network interface address
-  debug:
-      msg: "{{ docker_public_interface }}"
-
-- name: print docker private network interface address
-  debug:
-      msg: "{{ docker_private_interface }}"
-
 - name: Setting hostname 
   command: hostnamectl set-hostname docker
-
-- name: copy config file of the app
-  template:
-    src: "web.conf.j2"
-    dest: /home/{{ docker_user }}/web.conf
-    owner: "{{ docker_user }}"
-    group: "{{ docker_user }}"
-    mode: 0644
-  
-- name: copy app files to docker VM
-  copy: 
-    src: "{{ item }}"
-    dest: /home/{{ docker_user }}/
-    owner: "{{ docker_user }}"
-    group: "{{ docker_user }}"
-    mode: 0644
-  with_fileglob:
-    - "../../app/*"
-
-- name: build container image
-  shell: "docker build -t webapp ."
-
-- name: run a container
-  shell: "docker run --rm -d -p 5000:80 --add-host {{ docker_public_interface }}:{{ docker_private_interface }} --name webapp webapp"
